@@ -29,10 +29,9 @@ if video_url:
     audio_file = download_audio(video_url)
 
     if audio_file:
-        print("Audio downloaded successfully!")
+        print("Audio downloaded successfully")
 
-        # You can perform further actions or use the downloaded file as needed
     else:
-        print("Error downloading audio.")
+        print("Error downloading audio")
 else:
-    print("Invalid URL.")
+    print("Invalid URL")
