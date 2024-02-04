@@ -3,6 +3,12 @@ import tkinter as tk
 from tkinter import simpledialog
 import os
 import sys
+import re
+
+def sanitize_filename(filename):
+    # Remove invalid characters
+    filename = re.sub(r'[\\/*?:"<>|]', "", filename)
+    return filename
 
 #tinker  simple gui setup
 root = tk.Tk()
@@ -12,7 +18,8 @@ download_dir = os.path.join("/Users/Joseph/Downloads/spotify/spotify")
 def download_audio(video_url):
     try:
         yt = YouTube(video_url)
-        audio_filename = os.path.join(f"downloads/{yt.title}_audio.mp3")
+        sanitized_title = sanitize_filename(yt.title)
+        audio_filename = os.path.join(f"downloads/{sanitized_title}_audio.mp3")
         audio_stream = yt.streams.filter(only_audio=True).first()
         print("Downloading audio:", yt.title)
         if not os.path.exists(download_dir):
