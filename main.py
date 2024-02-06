@@ -4,6 +4,8 @@ from tkinter import simpledialog
 import os
 import sys
 import re
+import eyed3
+
 
 def sanitize_filename(filename):
     # Remove invalid characters
@@ -19,7 +21,7 @@ def download_audio(video_url):
     try:
         yt = YouTube(video_url)
         sanitized_title = sanitize_filename(yt.title)
-        audio_filename = os.path.join(f"downloads/{sanitized_title}_audio.mp3")
+        audio_filename = os.path.join(f"{sanitized_title}_audio.mp3")
         audio_stream = yt.streams.filter(only_audio=True).first()
         print("Downloading audio:", yt.title)
         if not os.path.exists(download_dir):
@@ -43,3 +45,16 @@ if video_url:
         print("Error downloading audio.")
 else:
     print("Invalid URL.")
+def add_bitrate_to_metadata(audio_file):
+    audio_file_path = os.path.join(download_dir, audio_file)
+    audio = eyed3.load(audio_file_path)
+    if audio is not None:
+        if audio.tag is None:
+            audio.initTag()
+        audio.tag.comments.set(f"Bitrate: {audio.info.bit_rate_str}")
+        audio.tag.save()
+
+# After downloading the audio
+if audio_file:
+    print("Audio downloaded successfully!")
+    add_bitrate_to_metadata(audio_file)
