@@ -16,7 +16,6 @@ I wanted an easy way to download YouTube videos into my Spotify local source fil
 - Save downloaded files locally for easy access and further use.
 
 ## Requirements
-- Python 3.x
 - Tkinter
 - Pytube
 
